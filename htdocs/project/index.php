@@ -2,7 +2,7 @@
 <body>
 
 
-<h1> Test </h1>
+<h1> Welcome to the Gallery </h1>
 
 <?php
     echo "Meet our artists";
