@@ -1,0 +1,52 @@
+body {
+    background-color: #ffffff;
+    font: normal 12px Verdana;
+    padding: 16px;
+}
+
+h1 {font: 30px Verdana; padding-top: 15px;}
+h2 {font: 24px Verdana;}
+
+.div1 {
+    background-color: #eaeaea;
+    padding-bottom: 16px;
+    padding-left: 16px;
+}
+
+.button{
+    background-color: #757273;
+    color: white;
+    border: none;
+    outline: none;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    font: normal Verdana;
+    font-size: 18px;
+}
+.button:hover { background-color:#a7a2a4; transition: 0.2s;}
+
+.button_header {
+    background-color: #555555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font: normal Verdana;
+    font-size: 22px;
+    width: 25%;
+}
+
+.button_home {float:right;}
+  
+.button_blue {background-color: #1c98a5;}
+.button_blue:hover { background-color:#30abb8; transition: 0.2s;}
+.button_yellow {background-color: #eeb136;}
+.button_yellow:hover { background-color:#edbf62; transition: 0.2s;}
+.button_red {background-color: #da3f39;}
+.button_red:hover {background-color: #e45a56; transition: 0.2s;}
+.button_grey {background-color: #454344;}
+.button_grey:hover {background-color: #757273; transition: 0.2s;}
