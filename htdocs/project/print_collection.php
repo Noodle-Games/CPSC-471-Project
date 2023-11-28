@@ -70,7 +70,8 @@ echo "<table border='1'>
 <th> Year </th>
 <th> Artist Contact </th>
 <th> Location </th>
-<th> In Stock </th>
+<th> Stock </th>
+<th> </th>
 </tr>";
 while($row = mysqli_fetch_array($prints)){
     echo "<tr>";
@@ -80,6 +81,7 @@ while($row = mysqli_fetch_array($prints)){
     echo "<td>" . $row['artist_email']. "</td>";
     echo "<td>" . $row['store_name']. "</td>";
     echo "<td>" . $row['quantity']. "</td>";
+    echo "<td> <button class=\"button_buy\">Buy</button> </td>";
     echo "</tr>";
 }
 echo "</table>";

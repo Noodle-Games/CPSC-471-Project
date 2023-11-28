@@ -40,8 +40,19 @@ h2 {font: 24px Verdana;}
     width: 25%;
 }
 
+.button_buy{
+    background-color: #eaeaea00;
+    color: black;
+    border: none;
+    outline: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font: normal Verdana;
+    font-size: 18px;
+}
+.button_buy:hover{color: 1c98a5;transition: 0.2s;}
+
 .button_home {float:right;}
-  
 .button_blue {background-color: #1c98a5;}
 .button_blue:hover { background-color:#30abb8; transition: 0.2s;}
 .button_yellow {background-color: #eeb136;}
