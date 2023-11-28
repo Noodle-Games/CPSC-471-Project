@@ -50,3 +50,18 @@ h2 {font: 24px Verdana;}
 .button_red:hover {background-color: #e45a56; transition: 0.2s;}
 .button_grey {background-color: #454344;}
 .button_grey:hover {background-color: #757273; transition: 0.2s;}
+
+table {
+    border: 0px;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 8px;
+    border: 0px;
+}
+th {
+    background-color: #1c98a5;
+    color: white;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
