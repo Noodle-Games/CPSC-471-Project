@@ -11,7 +11,7 @@
     <h2> Print Collection </h2>
 </div>
 
-<h2>Meet Our Artists</h2>
+<h3>Meet Our Artists</h3>
 
 <?php
 
@@ -34,14 +34,15 @@ if (mysqli_connect_errno()){
 // }
 
 // ARTIST DISPLAY
-$artists = mysqli_query($con, "SELECT * FROM artist");
+$query = "SELECT * FROM artist";
+$artists = mysqli_query($con, $query);
 
 // Table headings
 echo "<table border='1'>
 <tr>
-<th> Email </th>
-<th> First </th>
-<th> Last </th>
+<th class=\"th_blue\"> Email </th>
+<th class=\"th_blue\"> First </th>
+<th class=\"th_blue\"> Last </th>
 </tr>";
 
 // Looping through select query to display in table
@@ -56,7 +57,7 @@ echo "</table>";
 
 ?>
 
-<h2>Print Artwork Inventory</h2>
+<h3>Print Artwork Inventory</h3>
 
 <?php
 
@@ -65,13 +66,13 @@ $query = "SELECT * FROM artwork AS A, print AS P, store AS S WHERE P.artwork_id 
 $prints = mysqli_query($con, $query);
 echo "<table border='1'>
 <tr>
-<th> Title </th>
-<th> Price </th>
-<th> Year </th>
-<th> Artist Contact </th>
-<th> Location </th>
-<th> Stock </th>
-<th> </th>
+<th class=\"th_blue\"> Title </th>
+<th class=\"th_blue\"> Price </th>
+<th class=\"th_blue\"> Year </th>
+<th class=\"th_blue\"> Artist Contact </th>
+<th class=\"th_blue\">  Location </th>
+<th class=\"th_blue\"> Stock </th>
+<th class=\"th_blue\"> </th>
 </tr>";
 while($row = mysqli_fetch_array($prints)){
     echo "<tr>";
