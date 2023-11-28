@@ -43,9 +43,6 @@ while($row = mysqli_fetch_array($artists)){
 }
 echo "</table>";
 
-// PRINT ARTWORK DISPLAY
-echo "<h3>Print Artwork Inventory</h3>";
-
 // SEARCH FUNCTION
 $artwork_id_search = $artworkErr = "";
 // Reference 1: https://www.w3schools.com/php/php_form_complete.asp
@@ -101,6 +98,8 @@ function display_artwork($art_id, $con){
     echo "</table>";
 }
 ?>
+
+<h3>Print Artwork Inventory</h3>
 
 <!--Reference 1-->
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
