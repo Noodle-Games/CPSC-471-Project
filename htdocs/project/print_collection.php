@@ -25,10 +25,10 @@
 <h3>Meet Our Artists</h3>
 
 <?php
+session_start();
+
 // Create SQL connection
 $con = mysqli_connect("localhost", "cpsc471_project", "1234", "art_gallery");
-
-// Check SQL connection
 if (mysqli_connect_errno()){
     echo "Failed to connect to SQL".mysqli_connect_error();
 }
@@ -59,10 +59,12 @@ echo "</table>";
 $artwork_id_search = $artworkErr = "";
 // Reference 1: https://www.w3schools.com/php/php_form_complete.asp
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $artwork_id_search = test_input($_POST["artwork_id_search"]);
-    // check if name only contains letters and whitespace
-    if (!preg_match("/^[a-zA-Z0-9' ]*$/",$artwork_id_search)) {
-        $artworkErr = "Only letters, numbers, and white space allowed";
+    if(array_key_exists('artwork_id_search', $_POST)){
+        $artwork_id_search = test_input($_POST["artwork_id_search"]);
+        // check if name only contains letters and whitespace
+        if (!preg_match("/^[a-zA-Z0-9' ]*$/",$artwork_id_search)) {
+            $artworkErr = "Only letters, numbers, and white space allowed";
+        }
     }
 }
 
@@ -104,10 +106,30 @@ function display_artwork($art_id, $con){
         echo "<td>" . $row['artist_email']. "</td>";
         echo "<td>" . $row['store_name']. "</td>";
         echo "<td>" . $row['quantity']. "</td>";
-        echo "<td> <button class=\"button_buy\">Buy</button> </td>";
+        echo "<td> <form class=\"form_buy\" method=\"post\"> <button type=\"submit\" class=\"button_buy\" name=\"" . $row['artwork_id'] . "\" value=\"" . $row['artwork_id'] . "\">Buy</button> </form> </td>";
         echo "</tr>";
     }
     echo "</table>";
+}
+
+function buy_artwork($art_id, $cust_id, $con){
+    // Get artwork price / quantity
+    $query = "SELECT * FROM print AS P WHERE P.artwork_id = $art_id";
+    $print = mysqli_fetch_array(mysqli_query($con, $query));
+    $price = $print['price'];
+    $quantity = $print['quantity'];
+
+    // Cancel if out of stock
+    if($quantity <= 0) return;
+    
+    // Insert receipt entry
+    $query = "INSERT INTO receipt VALUES ($art_id, $cust_id, NOW(), $price)";
+    mysqli_query($con, $query);
+
+    // Update quantity
+    $newQuantity = $quantity - 1;
+    $query = "UPDATE print AS P SET quantity = $newQuantity WHERE P.artwork_id = $art_id";
+    mysqli_query($con, $query);
 }
 ?>
 
@@ -122,7 +144,21 @@ function display_artwork($art_id, $con){
 <!--Reference 1-->
 
 <?php 
+
+// BUY FUNCTION
+$query = "SELECT artwork_id FROM artwork";
+$artwork_ids = mysqli_query($con, $query);
+while($row = mysqli_fetch_array($artwork_ids)){
+    if(array_key_exists($row['artwork_id'], $_POST)) { 
+        $art_id = "\"" . $row['artwork_id'] . "\"";
+        $cust_id = "\"" . $_SESSION['customer_id'] . "\"";
+        buy_artwork($art_id, $cust_id, $con);
+        header("Location: print_collection.php");
+    }
+}
+
 display_artwork($artwork_id_search, $con); 
+
 mysqli_close($con);
 ?>
 

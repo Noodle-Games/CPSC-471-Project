@@ -63,6 +63,10 @@ h3 {font: 24px Verdana; padding-top: 30px;}
 .button_grey {background-color: #454344;}
 .button_grey:hover {background-color: #757273; transition: 0.2s;}
 
+.form_buy{
+    margin: 0px;
+}
+
 table {
     border: 0px;
     border-collapse: collapse;
@@ -76,7 +80,7 @@ th, td {
     color: white;
 }
 .th_grey{
-    background-color: #757273;
+    background-color: #454344;
     color: white;
 }
 tr:nth-child(even) {background-color: #f2f2f2;}
