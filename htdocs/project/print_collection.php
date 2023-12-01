@@ -1,12 +1,16 @@
 <html>
 
 <head>
+<title> Collection </title>
 <link rel="stylesheet" href="galleryStyle.css">
 </head>
 
 <body>
-<button class="button button_home" onclick="location='index.php'">Home Page</button>
+
 <div class="div1">
+    
+    <button class="button button_home" onclick="location='loginPage.php'">Logout</button>
+    <button class="button button_home" onclick="location='index.php'">Home Page</button>
     <h1> Calgary Art Market </h1>
     <h2> Print Collection </h2>
 </div>

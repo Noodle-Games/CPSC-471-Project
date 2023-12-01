@@ -1,10 +1,13 @@
 <html>
 
 <head>
+<title> Administration </title>
 <link rel="stylesheet" href="galleryStyle.css">
 </head>
 
 <body>
+
+<button class="button button_home" onclick="location='loginPage.php'">Logout</button>
 <button class="button button_home" onclick="location='index.php'">Home Page</button>
 <div class="div1">
     <h1> Calgary Art Market </h1>
