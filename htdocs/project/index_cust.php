@@ -4,6 +4,7 @@ session_start();
 if (isset($_SESSION['customer_id'])){
 
 ?>
+
 <html>
 <head>
 <title> Calgary Art Market </title>

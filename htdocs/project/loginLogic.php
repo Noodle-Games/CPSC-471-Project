@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 //Create SQL Connection
 $con = mysqli_connect("localhost", "cpsc471_project", "1234", "art_gallery");
 
@@ -10,15 +11,15 @@ if (mysqli_connect_errno()){
 
 // Checking user ID
 if(isset($_POST['userID'])){
-    function validate($data){
+    function test_input($data){
         $data=trim($data);
         $data=stripslashes($data);
         $data=htmlspecialchars($data);
         return $data;
     }
 
-    $userID = validate($_POST['userID']);
-    $userType = validate($_POST['userType']);
+    $userID = test_input($_POST['userID']);
+    $userType = test_input($_POST['userType']);
 
     if(empty($userID)){
         header("Location: loginPage.php?error=User ID Required");
@@ -69,3 +70,4 @@ if(isset($_POST['userID'])){
     header("Location: loginPage.php");
     exit();
 }
+?>

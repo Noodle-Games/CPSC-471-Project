@@ -55,7 +55,7 @@ h3 {font: 24px Verdana; padding-top: 30px;}
 
 .button_home {float:right;}
 .button_blue {background-color: #1c98a5;}
-.button_blue:hover { background-color:#30abb8; transition: 0.2s;}
+.button_blue:hover {background-color:#30abb8; transition: 0.2s;}
 .button_yellow {background-color: #eeb136;}
 .button_yellow:hover { background-color:#edbf62; transition: 0.2s;}
 .button_red {background-color: #da3f39;}

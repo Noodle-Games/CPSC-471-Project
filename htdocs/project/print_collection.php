@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 
 <html>
 <head>
@@ -10,14 +13,7 @@
 <div class="div1">
     
     <button class="button button_home" onclick="location='loginPage.php'">Logout</button>
-
-    <!-- Home Page logic depending on customer to employee -->
-    <?php if(isset($_SESSION['customer_id'])){ ?>
-        <button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
-    <?php } 
-    else{?>
-        <button class="button button_home" onclick="location='index_emp.php'">Home Page</button>
-    <?php }?>
+    <button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
 
     <h1> Calgary Art Market </h1>
     <h2> Print Collection </h2>
@@ -25,7 +21,7 @@
 <h3>Meet Our Artists</h3>
 
 <?php
-session_start();
+//session_start();
 
 // Create SQL connection
 $con = mysqli_connect("localhost", "cpsc471_project", "1234", "art_gallery");
