@@ -4,7 +4,6 @@ session_start();
 if (isset($_SESSION['customer_id'])){
 
 ?>
-<!DOCTYPE html>
 <html>
 <head>
 <title> Calgary Art Market </title>
@@ -20,7 +19,7 @@ if (isset($_SESSION['customer_id'])){
 <button class="button_header button_blue" onclick="location='print_collection.php'">Print Collection</button>
 <button class="button_header button_yellow" onclick="location='live_auctions.php'">Live Auctions</button>
 <button class="button_header button_red" onclick="location='submit_artwork.php'">Submit Artwork</button>
-<button class="button_header button_grey" onclick="location='administration.php'">Administration</button>
+<button class="button_header button_grey" onclick="location='order_history.php'">Order History</button>
 
 </body>
 </html>
