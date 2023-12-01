@@ -21,7 +21,6 @@ session_start();
 
 <?php
 // Retrieve Session
-session_start();
 $current_user = $_SESSION['customer_id'];
 echo "<h3>Order History For " . $_SESSION['Fname'] . " " . $_SESSION['Lname'] . "</h3>";
 
