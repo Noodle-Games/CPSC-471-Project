@@ -17,9 +17,13 @@
 
     <label>User ID</label>
     <input type="text" name="userID" placeholder="Enter User ID">
-    <!-- ADD DROP DOWN INPUT FOR EMPL OR CUST -->
-
     
+    <!-- Drop down menu to pick type of user -->
+    <label for="userType">User Type:</label>
+    <select name="userType">
+        <option value="customer">Customer</option>
+        <option value="employee">Employee</option>
+    </select>
 
     <button type="submit">Login</submit>
 
