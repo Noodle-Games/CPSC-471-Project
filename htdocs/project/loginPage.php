@@ -19,6 +19,8 @@
     <input type="text" name="userID" placeholder="Enter User ID">
     <!-- ADD DROP DOWN INPUT FOR EMPL OR CUST -->
 
+    
+
     <button type="submit">Login</submit>
 
 </form>
