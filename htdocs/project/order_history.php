@@ -33,10 +33,10 @@ $receipts = mysqli_query($con, $query);
 // Table headings
 echo "<table border='1'>
 <tr>
-<th class=\"th_blue\"> ID </th>
-<th class=\"th_blue\"> Title </th>
-<th class=\"th_blue\"> Date </th>
-<th class=\"th_blue\"> Price </th>
+<th class=\"th_grey\"> ID </th>
+<th class=\"th_grey\"> Title </th>
+<th class=\"th_grey\"> Date </th>
+<th class=\"th_grey\"> Price </th>
 </tr>";
 
 // Looping through select query to display in table
