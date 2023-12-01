@@ -8,7 +8,7 @@
 <body>
 
 <button class="button button_home" onclick="location='loginPage.php'">Logout</button>
-<button class="button button_home" onclick="location='index.php'">Home Page</button>
+<button class="button button_home" onclick="location='index_emp.php'">Home Page</button>
 <div class="div1">
     <h1> Calgary Art Market </h1>
     <h2> Administrator Console </h2>

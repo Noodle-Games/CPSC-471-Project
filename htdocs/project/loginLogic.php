@@ -35,14 +35,14 @@ if(isset($_POST['userID'])){
                 $_SESSION['customer_id'] = $row['customer_id'];
                 $_SESSION['Fname'] = $row['Fname'];
                 $_SESSION['Lname'] = $row['Lname'];
-                header("Location: index.php");
+                header("Location: index_cust.php");
                 exit();
             }
         }else{
             header("Location: loginPage.php?error=Invalid UserID");
             exit();
         }
-    }else{
+    }else if($userType == "employee"){
         // Setting up employee select query
         $sql_user = "SELECT * FROM employee WHERE employee_id='$userID'";
         $result = mysqli_query($con, $sql_user);
@@ -51,16 +51,19 @@ if(isset($_POST['userID'])){
         if (mysqli_num_rows($result) === 1){
             $row = mysqli_fetch_assoc($result);
             if ($row['employee_id'] === $userID){
-                $_SESSION['employee_id'] = $row['customer_id'];
+                $_SESSION['employee_id'] = $row['employee_id'];
                 $_SESSION['Fname'] = $row['Fname'];
                 $_SESSION['Lname'] = $row['Lname'];
-                header("Location: index.php");
+                header("Location: index_emp.php");
                 exit();
             }
         }else{
             header("Location: loginPage.php?error=Invalid UserID");
             exit();
         }
+    }else{
+        header("Location: loginPage.php");
+        exit();
     }
 }else{
     header("Location: loginPage.php");
