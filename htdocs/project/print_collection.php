@@ -124,7 +124,7 @@ function buy_artwork($art_id, $cust_id, $con){
 
     // Update quantity
     $newQuantity = $quantity - 1;
-    $query = "UPDATE print AS P SET quantity = $newQuantity WHERE P.artwork_id = $art_id";
+    $query = "UPDATE print AS P SET P.quantity = $newQuantity WHERE P.artwork_id = $art_id";
     mysqli_query($con, $query);
 }
 ?>
@@ -133,7 +133,8 @@ function buy_artwork($art_id, $cust_id, $con){
 
 <!--Reference 1-->
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-    Search Artwork ID or Title: <input type="text" name="artwork_id_search" value="<?php echo $artwork_id_search;?>">
+    <label>Search Artwork ID or Title:</label> 
+    <input type="text" name="artwork_id_search" value="<?php echo $artwork_id_search;?>">
     <input type="submit" name="submit" value="Search">
     <span> <?php echo $artworkErr;?></span>
 </form>
