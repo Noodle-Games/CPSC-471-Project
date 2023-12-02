@@ -24,6 +24,12 @@ $con = mysqli_connect("localhost", "cpsc471_project", "1234", "art_gallery");
 if (mysqli_connect_errno()){
     echo "Failed to connect to SQL".mysqli_connect_error();
 }
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 
 // SEARCH FUNCTION
 $artwork_id_search = $artworkErr = "";
@@ -38,12 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+
 
 // SQL query to display artwork
 function display_artwork($art_id, $con){
