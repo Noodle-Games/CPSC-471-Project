@@ -88,7 +88,8 @@ function update_artwork($art_id, $con){
 
     // Update quantity
     $newQuantity = test_input($_POST[$art_id]);
-    $query = "UPDATE print AS P SET P.quantity = $newQuantity WHERE P.artwork_id = $art_id";
+    $artid = "\"" . $art_id . "\"";
+    $query = "UPDATE print AS P SET P.quantity = $newQuantity WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
 }
 ?>
