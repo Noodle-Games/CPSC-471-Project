@@ -17,6 +17,7 @@ if (isset($_SESSION['employee_id'])){
     <h2> Welcome, <?php echo $_SESSION['Fname'] . " " . $_SESSION['Lname']; ?></h2>
 </div>
 
+<!-- START OF MODIFYING PRINT ARTWORK MEGA SECTION -->
 <h3> Print Artwork Modify </h3>
 <?php
 // Create SQL connection
@@ -43,8 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-
-
 
 // SQL query to display artwork
 function display_artwork($art_id, $con){
@@ -78,8 +77,8 @@ function display_artwork($art_id, $con){
         echo "<td>" . $row['artist_email']. "</td>";
         echo "<td>" . $row['store_name']. "</td>";
         echo "<td>" . $row['quantity']. "</td>";
-        echo "<td> <form method=\"post\">  <input type=\"text\" name=\"" . $row['artwork_id'] . "\" placeholder=\"Enter Quantity\"> </td>";
-        echo "<td><button type=\"submit\">Update Quantity</submit> </form> </td>";
+        echo "<td> <form method=\"post\">  <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . "\" placeholder=\"Enter Quantity\"><br><button style=\"width: 100%;\" type=\"submit\">Update Quantity</submit> </form> </td>";
+        echo "<td> <form method=\"post\">  <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . 'p' ."\" placeholder=\"Enter Price\"><br><button style=\"width: 100%;\" type=\"submit\">Update Price</submit> </form> </td>";
         echo "</tr>";
     }
     echo "</table>";
@@ -91,6 +90,12 @@ function update_artwork($art_id, $con){
     $newQuantity = test_input($_POST[$art_id]);
     $artid = "\"" . $art_id . "\"";
     $query = "UPDATE print AS P SET P.quantity = $newQuantity WHERE P.artwork_id = $artid";
+    mysqli_query($con, $query);
+
+    // Update price
+    $newPrice = test_input($_POST[$art_id].'p');
+    $artid = "\"" . $art_id . "\"";
+    $query = "UPDATE print AS P SET P.price = $newPrice WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
 }
 ?>
@@ -106,11 +111,11 @@ function update_artwork($art_id, $con){
 
 <?php 
 
-// BUY FUNCTION
+// Checking for artwork changes input
 $query = "SELECT artwork_id FROM artwork";
 $artwork_ids = mysqli_query($con, $query);
 while($row = mysqli_fetch_array($artwork_ids)){
-    if(array_key_exists($row['artwork_id'], $_POST)) { 
+    if(array_key_exists($row['artwork_id'], $_POST) || array_key_exists($row['artwork_id'] . 'p', $_POST)) { 
         $art_id = $row['artwork_id'];
         update_artwork($art_id, $con);
         header("Location: index_emp.php");
@@ -121,7 +126,7 @@ display_artwork($artwork_id_search, $con);
 
 mysqli_close($con);
 ?>
-
+<!-- END OF MODIFYING PRINT ARTWORK MEGA SECTION -->
 
 </body>
 </html>
