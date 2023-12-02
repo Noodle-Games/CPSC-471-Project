@@ -10,7 +10,7 @@
 <!-- Reference: https://www.youtube.com/watch?v=JDn6OAMnJwQ -->
 <form action="loginLogic.php" method="post">
 
-    <h2> LOGIN </h2>
+    <h2> Calgary Art Market </h2>
 
     <?php if(isset($_GET['error'])) { ?>
         <p class="error"><?php echo $_GET['error'];?></p>

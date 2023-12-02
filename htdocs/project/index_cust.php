@@ -13,7 +13,7 @@ if (isset($_SESSION['customer_id'])){
 
 <body>
 <div class="div1">
-    <button class="button button_home" onclick="location='loginPage.php'">Logout</button>
+    <button class="button button_home" onclick="location='index.php'">Logout</button>
     <h1> Calgary Art Market </h1>
     <h2> Welcome, <?php echo $_SESSION['Fname'] . " " . $_SESSION['Lname']; ?></h2>
 </div>

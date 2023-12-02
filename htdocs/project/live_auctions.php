@@ -5,7 +5,9 @@
 </head>
 
 
-<button class="button button_home">Home Page</button>
+<button class="button button_home" onclick="location='index.php'">Logout</button>
+<button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
+
 <div class="div1">
     <h1> Calgary Art Market </h1>
     <h2> Live Auctions </h2>
