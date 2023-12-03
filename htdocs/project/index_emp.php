@@ -78,7 +78,7 @@ function display_artwork($art_id, $con){
         echo "<td>" . $row['store_name']. "</td>";
         echo "<td>" . $row['quantity']. "</td>";
         echo "<td> <form method=\"post\">  <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . "\" placeholder=\"Enter Quantity\"><br><button style=\"width: 100%;\" type=\"submit\">Update Quantity</submit> </form> </td>";
-        echo "<td> <form method=\"post\">  <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . 'p' ."\" placeholder=\"Enter Price\"><br><button style=\"width: 100%;\" type=\"submit\">Update Price</submit> </form> </td>";
+        echo "<td> <form method=\"post\">  <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . "p" ."\" placeholder=\"Enter Price\"><br><button style=\"width: 100%;\" type=\"submit\">Update Price</submit> </form> </td>";
         echo "</tr>";
     }
     echo "</table>";
@@ -93,7 +93,7 @@ function update_artwork($art_id, $con){
     mysqli_query($con, $query);
 
     // Update price
-    $newPrice = test_input($_POST[$art_id].'p');
+    $newPrice = test_input($_POST[$art_id."p"]);
     $artid = "\"" . $art_id . "\"";
     $query = "UPDATE print AS P SET P.price = $newPrice WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
@@ -133,7 +133,7 @@ mysqli_close($con);
 
 <?php
 }else{
-    header("Location: loginPage.php");
+    header("Location: index.php");
     exit();
 }
 ?>

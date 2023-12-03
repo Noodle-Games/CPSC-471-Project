@@ -22,7 +22,7 @@ if(isset($_POST['userID'])){
     $userType = test_input($_POST['userType']);
 
     if(empty($userID)){
-        header("Location: loginPage.php?error=User ID Required");
+        header("Location: index.php?error=User ID Required");
         exit();
     }else if($userType == "customer"){
         // Setting up customer select query
@@ -40,7 +40,7 @@ if(isset($_POST['userID'])){
                 exit();
             }
         }else{
-            header("Location: loginPage.php?error=Invalid UserID");
+            header("Location: index.php?error=Invalid UserID");
             exit();
         }
     }else if($userType == "employee"){
@@ -59,15 +59,15 @@ if(isset($_POST['userID'])){
                 exit();
             }
         }else{
-            header("Location: loginPage.php?error=Invalid UserID");
+            header("Location: index.php?error=Invalid UserID");
             exit();
         }
     }else{
-        header("Location: loginPage.php");
+        header("Location: index.php");
         exit();
     }
 }else{
-    header("Location: loginPage.php");
+    header("Location: index.php");
     exit();
 }
 ?>

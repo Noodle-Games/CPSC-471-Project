@@ -13,10 +13,15 @@ session_start();
 <div class="div1">
     
     <button class="button button_home" onclick="location='loginPage.php'">Logout</button>
-    <button class="button button_home" onclick="location='index_emp.php'">Home Page</button>
+    <!-- <button class="button button_home" onclick="location='index_emp.php'">Home Page</button> -->
     
     <h1> Calgary Art Market </h1>
     <h2> Administrator Console </h2>
+
+    <h3>Employee Information</h3>
+
+
+
 </div>
 
 </body>
