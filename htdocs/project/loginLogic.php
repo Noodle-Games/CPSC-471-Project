@@ -43,6 +43,25 @@ if(isset($_POST['userID'])){
             header("Location: index.php?error=Invalid UserID");
             exit();
         }
+    }else if($userType == "employee" and $userID == "E001"){
+        // Setting up employee select query
+        $sql_user = "SELECT * FROM employee WHERE employee_id='$userID'";
+        $result = mysqli_query($con, $sql_user);
+
+        // Fetching relevant data from database
+        if (mysqli_num_rows($result) === 1){
+            $row = mysqli_fetch_assoc($result);
+            if ($row['employee_id'] === $userID){
+                $_SESSION['employee_id'] = $row['employee_id'];
+                $_SESSION['Fname'] = $row['Fname'];
+                $_SESSION['Lname'] = $row['Lname'];
+                header("Location: administration.php");
+                exit();
+            }
+        }else{
+            header("Location: index.php?error=Invalid UserID");
+            exit();
+        }
     }else if($userType == "employee"){
         // Setting up employee select query
         $sql_user = "SELECT * FROM employee WHERE employee_id='$userID'";
