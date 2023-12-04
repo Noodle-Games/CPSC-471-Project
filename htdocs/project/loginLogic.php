@@ -43,7 +43,7 @@ if(isset($_POST['userID'])){
             header("Location: index.php?error=Invalid UserID");
             exit();
         }
-    }else if($userType == "employee" and $userID == "E001"){
+    }else if($userType == "employee" and $userID == "E003"){
         // Setting up employee select query
         $sql_user = "SELECT * FROM employee WHERE employee_id='$userID'";
         $result = mysqli_query($con, $sql_user);

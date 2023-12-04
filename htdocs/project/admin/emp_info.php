@@ -12,7 +12,7 @@ session_start();
 
 <div class="div1">
     
-    <button class="button button_home" onclick="location='index.php'">Logout</button>
+    <button class="button button_home" onclick="location='../index.php'">Logout</button>
     <button class="button button_home" onclick="location='../administration.php'">Home Page</button>
     
     <h1> Calgary Art Market </h1>
