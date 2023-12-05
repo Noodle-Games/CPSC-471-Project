@@ -18,7 +18,7 @@ if (isset($_SESSION['employee_id'])){
 </div>
 
 <!-- START OF MODIFYING PRINT ARTWORK MEGA SECTION -->
-<h3> Print Artwork Modify </h3>
+<h3> Modify Print Artwork </h3>
 <?php
 // Create SQL connection
 $con = mysqli_connect("localhost", "cpsc471_project", "1234", "art_gallery");
@@ -123,6 +123,95 @@ while($row = mysqli_fetch_array($artwork_ids)){
 }
 
 display_artwork($artwork_id_search, $con); 
+?>
+<!-- END OF MODIFYING PRINT ARTWORK MEGA SECTION -->
+
+
+<!-- START OF MODIFYING ORIGINAL ARTWORK MEGA SECTION -->
+<h3> Modify Original Artwork </h3>
+<?php
+
+// SEARCH FUNCTION
+$original_id_search = $originalErr = "";
+// Reference 1: https://www.w3schools.com/php/php_form_complete.asp
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(array_key_exists('original_id_search', $_POST)){
+        $original_id_search = test_input($_POST["original_id_search"]);
+        // check if name only contains letters and whitespace
+        if (!preg_match("/^[a-zA-Z0-9' ]*$/",$original_id_search)) {
+            $originalErr = "Only letters, numbers, and white space allowed";
+        }
+    }
+}
+
+// SQL query to display original artwork
+function display_original($art_id, $con){
+    $query = "";
+    if ($art_id == ""){
+        $query = "SELECT * FROM artwork AS A, original AS O, store as S WHERE A.store_id = S.store_id AND O.artwork_id = A.artwork_id";
+    }
+    else {
+        $art_id = "\"" . $art_id . "\"";
+        $query = "SELECT * FROM artwork AS A, original AS O, store AS S WHERE O.artwork_id = A.artwork_id AND A.store_id = S.store_id AND (A.title = $art_id OR A.artwork_id = $art_id)";
+    }
+    $prints = mysqli_query($con, $query);
+    echo "<table border='1'>
+    <tr>
+    <th class=\"th_blue\"> ID </th>
+    <th class=\"th_blue\"> Title </th>
+    <th class=\"th_blue\"> Reserve Amount </th>
+    <th class=\"th_blue\"> Year </th>
+    <th class=\"th_blue\"> Artist Contact </th>
+    <th class=\"th_blue\"> Location </th>
+    <th class=\"th_blue\"> </th>
+    </tr>";
+    while($row = mysqli_fetch_array($prints)){
+        echo "<tr>";
+        echo "<td>" . $row['artwork_id']. "</td>";
+        echo "<td>" . $row['title']. "</td>";
+        echo "<td>" . $row['reserve']. "</td>";
+        echo "<td>" . $row['year']. "</td>";
+        echo "<td>" . $row['artist_email']. "</td>";
+        echo "<td>" . $row['store_name']. "</td>";
+        echo "<td> <form method=\"post\">  <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . "\" placeholder=\"Enter Reserve Price\"><br><button style=\"width: 100%;\" type=\"submit\">Update Reserve</submit> </form> </td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+}
+
+function update_original($art_id, $con){
+
+    // Update reserve
+    $newReserve = test_input($_POST[$art_id]);
+    $artid = "\"" . $art_id . "\"";
+    $query = "UPDATE original SET reserve = $newReserve WHERE artwork_id = $artid";
+    mysqli_query($con, $query);
+}
+?>
+
+<!--Reference 1-->
+<!-- Search Artwork -->
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+    Search Artwork ID or Title: <input type="text" name="original_id_search" value="<?php echo $original_id_search;?>">
+    <input type="submit" name="submit" value="Search">
+    <span> <?php echo $originalErr;?></span>
+</form>
+<!--Reference 1-->
+
+<?php 
+
+// Checking for artwork changes input
+$query = "SELECT artwork_id FROM original";
+$original_ids = mysqli_query($con, $query);
+while($row = mysqli_fetch_array($original_ids)){
+    if(array_key_exists($row['artwork_id'], $_POST)) { 
+        $art_id = $row['artwork_id'];
+        update_original($art_id, $con);
+        header("Location: index_emp.php");
+    }
+}
+
+display_original($original_id_search, $con); 
 
 mysqli_close($con);
 ?>
