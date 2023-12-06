@@ -94,7 +94,6 @@ function update_artwork($art_id, $con){
 
     // Update price
     $newPrice = test_input($_POST[$art_id."p"]);
-    $artid = "\"" . $art_id . "\"";
     $query = "UPDATE print AS P SET P.price = $newPrice WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
 }
@@ -163,17 +162,21 @@ function display_original($art_id, $con){
     <th class=\"th_blue\"> Year </th>
     <th class=\"th_blue\"> Artist Contact </th>
     <th class=\"th_blue\"> Location </th>
+    <th class=\"th_blue\"> Approval</th>
+    <th class=\"th_blue\"> </th>
     <th class=\"th_blue\"> </th>
     </tr>";
     while($row = mysqli_fetch_array($prints)){
         echo "<tr>";
         echo "<td>" . $row['artwork_id']. "</td>";
         echo "<td>" . $row['title']. "</td>";
-        echo "<td>" . $row['reserve']. "</td>";
+        echo "<td style=\"text-align:center;\">" . $row['reserve']. "</td>";
         echo "<td>" . $row['year']. "</td>";
         echo "<td>" . $row['artist_email']. "</td>";
         echo "<td>" . $row['store_name']. "</td>";
-        echo "<td> <form method=\"post\">  <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . "\" placeholder=\"Enter Reserve Price\"><br><button style=\"width: 100%;\" type=\"submit\">Update Reserve</submit> </form> </td>";
+        echo "<td style=\"text-align:center;\">" . $row['approved']. "</td>";
+        echo "<td> <form method=\"post\"> <input style=\"width: 100%;\" type=\"text\" name=\"" . $row['artwork_id'] . "\" placeholder=\"Enter Reserve Price\"><br><button style=\"width: 100%;\" type=\"submit\">Update Reserve</submit> </form> </td>";
+        echo "<td> <form method=\"post\"> <select name=\"" . $row['artwork_id'] . "a" . "\"> <option value=\"unapprove\">Unapprove</option> <option value=\"approve\">Approve</option> </select> <br><button style=\"width: 80%;\" type=\"submit\">Update Approval</submit> </form> </td>";
         echo "</tr>";
     }
     echo "</table>";
@@ -184,8 +187,20 @@ function update_original($art_id, $con){
     // Update reserve
     $newReserve = test_input($_POST[$art_id]);
     $artid = "\"" . $art_id . "\"";
-    $query = "UPDATE original SET reserve = $newReserve WHERE artwork_id = $artid";
-    mysqli_query($con, $query);
+    $query1 = "UPDATE original SET reserve = $newReserve WHERE artwork_id = $artid";
+    mysqli_query($con, $query1);
+
+    // Update approval status
+    $newApproval = test_input($_POST[$art_id."a"]);
+    $query2 = "";
+    if($newApproval == "approve"){
+        $query2 = "UPDATE original SET approved = '1' WHERE artwork_id = $artid";
+    }
+    else{
+        $query2 = "UPDATE original SET approved = '0' WHERE artwork_id = $artid";
+    }
+    
+    mysqli_query($con, $query2);
 }
 ?>
 
@@ -204,7 +219,8 @@ function update_original($art_id, $con){
 $query = "SELECT artwork_id FROM original";
 $original_ids = mysqli_query($con, $query);
 while($row = mysqli_fetch_array($original_ids)){
-    if(array_key_exists($row['artwork_id'], $_POST)) { 
+    // Checking to update reserve and/or approval
+    if(array_key_exists($row['artwork_id'], $_POST) || array_key_exists($row['artwork_id'] . 'a', $_POST)) { 
         $art_id = $row['artwork_id'];
         update_original($art_id, $con);
         header("Location: index_emp.php");
@@ -215,7 +231,7 @@ display_original($original_id_search, $con);
 
 mysqli_close($con);
 ?>
-<!-- END OF MODIFYING PRINT ARTWORK MEGA SECTION -->
+<!-- END OF MODIFYING ORIGINAL ARTWORK MEGA SECTION -->
 
 </body>
 </html>
