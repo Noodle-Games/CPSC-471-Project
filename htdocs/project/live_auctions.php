@@ -61,7 +61,6 @@ if (!$con) {
 
                 if ($updateStatement->execute()) {
                     echo "Bid placed successfully!";
-                    header("Location: ".$_SERVER['PHP_SELF']);
                 } else {
                     echo "Error updating bid: " . $updateStatement->error;
                 }

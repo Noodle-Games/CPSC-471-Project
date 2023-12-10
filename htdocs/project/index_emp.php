@@ -183,29 +183,59 @@ function display_original($art_id, $con){
 }
 
 function update_original($art_id, $con) {
-
-    //Update reserve
-    $newReserve = test_input($_POST[$art_id]);
-    $artid = "\"" . $art_id . "\"";
-    $query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
+    // Update reserve
+    #$newReserve = test_input($_POST[$art_id]);
+    #artid = "\"" . $art_id . "\"";
+    #$query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
     
-    $updateReserve = $con->prepare($query1);
-    $updateReserve->bind_param("ds", $newReserve, $art_id);
+   # $updateReserve = $con->prepare($query1);
+    #$updateReserve->bind_param("ds", $newReserve, $art_id);
 
-    $updateReserve->execute();
+    #$updateReserve->execute();
 
-    $updateReserve->close();
+    #$updateReserve->close();
 
     // Update approval status
     $newApproval = test_input($_POST[$art_id . "a"]);
     $query2 = "";
-    
+
     if ($newApproval == "approve") {
         $query2 = "UPDATE original SET approved = '1' WHERE artwork_id = ?";
+
+        $getOwnerIdQuery = "SELECT owner_id FROM original WHERE artwork_id = ?";
+        $getOwnerIdStatement = $con->prepare($getOwnerIdQuery);
+        $getOwnerIdStatement->bind_param("s", $art_id);
+        $getOwnerIdStatement->execute();
+        $getOwnerIdStatement->bind_result($owner_id);
+        $getOwnerIdStatement->fetch();
+        $getOwnerIdStatement->close();
+
+        // Fetch the updated reserve value
+        $getReserveQuery = "SELECT reserve FROM original WHERE artwork_id = ?";
+        $getReserveStatement = $con->prepare($getReserveQuery);
+        $getReserveStatement->bind_param("s", $art_id);
+        $getReserveStatement->execute();
+        $getReserveStatement->bind_result($reserve);
+        echo $reserve;
+        $getReserveStatement->fetch();
+        $getReserveStatement->close();
+
+        // Insert into Auctions table
+        $insertAuctionQuery = "INSERT INTO auction (customer_id, artwork_id, starting_bid, highest_bid, start_date, end_date, approved) VALUES (?, ?, ?, 0, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 20 DAY), 1)";
+        $insertAuctionStatement = $con->prepare($insertAuctionQuery);
+        $insertAuctionStatement->bind_param("ssd", $owner_id, $art_id, $reserve);
+
+        if ($insertAuctionStatement->execute()) {
+            echo "Approval status updated and record inserted into Auctions successfully!";
+        } else {
+            echo "Error inserting record into Auctions: " . $insertAuctionStatement->error;
+        }
+
+        $insertAuctionStatement->close();
     } else {
         $query2 = "UPDATE original SET approved = '0' WHERE artwork_id = ?";
     }
-    
+
     $updateApproval = $con->prepare($query2);
     $updateApproval->bind_param("s", $art_id);
 
