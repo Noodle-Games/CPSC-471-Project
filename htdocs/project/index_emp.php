@@ -182,26 +182,38 @@ function display_original($art_id, $con){
     echo "</table>";
 }
 
-function update_original($art_id, $con){
+function update_original($art_id, $con) {
 
-    // Update reserve
+    //Update reserve
     $newReserve = test_input($_POST[$art_id]);
     $artid = "\"" . $art_id . "\"";
-    $query1 = "UPDATE original SET reserve = $newReserve WHERE artwork_id = $artid";
-    mysqli_query($con, $query1);
+    $query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
+    
+    $updateReserve = $con->prepare($query1);
+    $updateReserve->bind_param("ds", $newReserve, $art_id);
+
+    $updateReserve->execute();
+
+    $updateReserve->close();
 
     // Update approval status
-    $newApproval = test_input($_POST[$art_id."a"]);
+    $newApproval = test_input($_POST[$art_id . "a"]);
     $query2 = "";
-    if($newApproval == "approve"){
-        $query2 = "UPDATE original SET approved = '1' WHERE artwork_id = $artid";
-    }
-    else{
-        $query2 = "UPDATE original SET approved = '0' WHERE artwork_id = $artid";
+    
+    if ($newApproval == "approve") {
+        $query2 = "UPDATE original SET approved = '1' WHERE artwork_id = ?";
+    } else {
+        $query2 = "UPDATE original SET approved = '0' WHERE artwork_id = ?";
     }
     
-    mysqli_query($con, $query2);
+    $updateApproval = $con->prepare($query2);
+    $updateApproval->bind_param("s", $art_id);
+
+    $updateApproval->execute();
+
+    $updateApproval->close();
 }
+
 ?>
 
 <!--Reference 1-->
