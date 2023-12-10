@@ -198,13 +198,17 @@ function update_reserve($art_id, $con) {
     $newReserve = test_input($_POST[$art_id]);
     //$artid = "\"" . $art_id . "\"";
     $query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
+    $query2 = "UPDATE auction SET starting_bid = ? WHERE artwork_id = ?";
     
-    $updateReserve = $con->prepare($query1);
-    $updateReserve->bind_param("ds", $newReserve, $art_id);
+    $updateOriginal = $con->prepare($query1);
+    $updateOriginal->bind_param("ds", $newReserve, $art_id);
+    $updateOriginal->execute();
+    $updateOriginal->close();
 
-    $updateReserve->execute();
-
-    $updateReserve->close();
+    $updateAuction = $con->prepare($query2);
+    $updateAuction->bind_param("ds", $newReserve, $art_id);
+    $updateAuction->execute();
+    $updateAuction->close();
 }
 
 // Query to update the approval status for an original
