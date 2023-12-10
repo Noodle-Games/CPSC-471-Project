@@ -1,4 +1,8 @@
 <?php
+
+session_start();
+
+if (isset($_SESSION['customer_id'])){
 // Create SQL connection
 $con = mysqli_connect("localhost", "cpsc471_project", "1234", "art_gallery");
 
@@ -85,6 +89,12 @@ if (!$con) {
 </body>
 
 </html>
+<?php
+}else{
+    header("Location: index.php");
+    exit();
+}
+?>
 
 
 <style>
