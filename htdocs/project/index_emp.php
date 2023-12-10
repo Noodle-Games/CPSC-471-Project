@@ -84,19 +84,24 @@ function display_artwork($art_id, $con){
     echo "</table>";
 }
 
-function update_artwork($art_id, $con){
+function update_quantity($art_id, $con){
 
     // Update quantity
     $newQuantity = test_input($_POST[$art_id]);
     $artid = "\"" . $art_id . "\"";
     $query = "UPDATE print AS P SET P.quantity = $newQuantity WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
+}
+
+function update_price($art_id, $con){
 
     // Update price
     $newPrice = test_input($_POST[$art_id."p"]);
+    $artid = "\"" . $art_id . "\"";
     $query = "UPDATE print AS P SET P.price = $newPrice WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
 }
+
 ?>
 
 <!--Reference 1-->
@@ -114,9 +119,14 @@ function update_artwork($art_id, $con){
 $query = "SELECT artwork_id FROM artwork";
 $artwork_ids = mysqli_query($con, $query);
 while($row = mysqli_fetch_array($artwork_ids)){
-    if(array_key_exists($row['artwork_id'], $_POST) || array_key_exists($row['artwork_id'] . 'p', $_POST)) { 
+    if(array_key_exists($row['artwork_id'], $_POST)) { 
         $art_id = $row['artwork_id'];
-        update_artwork($art_id, $con);
+        update_quantity($art_id, $con);
+        header("Location: index_emp.php");
+    }
+    if(array_key_exists($row['artwork_id'] . 'p', $_POST)) { 
+        $art_id = $row['artwork_id'];
+        update_price($art_id, $con);
         header("Location: index_emp.php");
     }
 }
