@@ -236,7 +236,7 @@ function update_approval($art_id, $con) {
         $getReserveStatement->close();
 
         // Insert into Auctions table
-        $insertAuctionQuery = "INSERT INTO auction (customer_id, artwork_id, starting_bid, highest_bid, start_date, end_date, approved) VALUES (?, ?, ?, 0, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 20 DAY), 1)";
+        $insertAuctionQuery = "INSERT INTO auction (customer_id, artwork_id, starting_bid, highest_bid, start_date, end_date) VALUES (?, ?, ?, 0, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 20 DAY))";
         $insertAuctionStatement = $con->prepare($insertAuctionQuery);
         $insertAuctionStatement->bind_param("ssd", $owner_id, $art_id, $reserve);
 
@@ -249,13 +249,15 @@ function update_approval($art_id, $con) {
         $insertAuctionStatement->close();
     } else {
         $query2 = "UPDATE original SET approved = '0' WHERE artwork_id = ?";
+        $query3 = "DELETE FROM auction WHERE artwork_id = \"$art_id\"";
+        $auctionDelete = $con->prepare($query3);
+        $auctionDelete->execute();
+        $auctionDelete->close();
     }
 
     $updateApproval = $con->prepare($query2);
     $updateApproval->bind_param("s", $art_id);
-
     $updateApproval->execute();
-
     $updateApproval->close();
 }
 
