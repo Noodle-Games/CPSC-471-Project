@@ -30,7 +30,7 @@ if (!$con) {
     // AUCTION DISPLAY
     $query = "SELECT * FROM auction";
     $auction = mysqli_query($con, $query);
-
+    
     while ($row = mysqli_fetch_array($auction)) {
         echo '<div class="auction-item">';
         echo '<img src="">';
@@ -41,38 +41,41 @@ if (!$con) {
         echo '<div class="bid">';
         echo '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
         echo '<input type="hidden" name="artwork_id" value="' . $row['artwork_id'] . '">';
+        echo '<input type="hidden" name="action" value="submit_bid">';
         echo 'Place Bid: $<input type="text" name="bid_amount">';
-        echo '<input type="submit" name="submit" value="Submit Bid">';
+        echo '<input type="submit" name="submit_' . $row['artwork_id'] . '" value="Submit Bid">';
         echo '</form>';
-
-        if (isset($_POST["submit"])) {
+    
+        if (isset($_POST["submit_" . $row['artwork_id']]) && $_POST['action'] == 'submit_bid') {
             $artwork_id = $_POST["artwork_id"];
             $bid_amount = $_POST["bid_amount"];
-
+    
             // Validate bid amount
-            if (!is_numeric($bid_amount) or $bid_amount <= $row['highest_bid']) {
+            if (!is_numeric($bid_amount) or $bid_amount <= $row['highest_bid'] or $bid_amount <= $row['starting_bid'] ) {
                 echo "Invalid bid amount";
             } else {
                 $bid_amount = floatval($bid_amount);
-
+    
                 $updateQuery = "UPDATE auction SET highest_bid = ? WHERE artwork_id = ?";
                 $updateStatement = $con->prepare($updateQuery);
-                $updateStatement->bind_param("di", $bid_amount, $artwork_id);
-
+                $updateStatement->bind_param("ds", $bid_amount, $artwork_id);
+    
                 if ($updateStatement->execute()) {
                     echo "Bid placed successfully!";
+                    header("Location: live_auctions.php");
                 } else {
                     echo "Error updating bid: " . $updateStatement->error;
                 }
-
+    
                 $updateStatement->close();
             }
         }
-
+    
         echo '</div>';
         echo '</div>';
         echo '</div>';
     }
+    
     ?>
 
     <?php
