@@ -182,18 +182,23 @@ function display_original($art_id, $con){
     echo "</table>";
 }
 
-function update_original($art_id, $con) {
+// Query to update the reserve price for an original
+function update_reserve($art_id, $con) {
     // Update reserve
-    #$newReserve = test_input($_POST[$art_id]);
-    #artid = "\"" . $art_id . "\"";
-    #$query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
+    $newReserve = test_input($_POST[$art_id]);
+    //$artid = "\"" . $art_id . "\"";
+    $query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
     
-   # $updateReserve = $con->prepare($query1);
-    #$updateReserve->bind_param("ds", $newReserve, $art_id);
+    $updateReserve = $con->prepare($query1);
+    $updateReserve->bind_param("ds", $newReserve, $art_id);
 
-    #$updateReserve->execute();
+    $updateReserve->execute();
 
-    #$updateReserve->close();
+    $updateReserve->close();
+}
+
+// Query to update the approval status for an original
+function update_approval($art_id, $con) {
 
     // Update approval status
     $newApproval = test_input($_POST[$art_id . "a"]);
@@ -261,10 +266,16 @@ function update_original($art_id, $con) {
 $query = "SELECT artwork_id FROM original";
 $original_ids = mysqli_query($con, $query);
 while($row = mysqli_fetch_array($original_ids)){
-    // Checking to update reserve and/or approval
-    if(array_key_exists($row['artwork_id'], $_POST) || array_key_exists($row['artwork_id'] . 'a', $_POST)) { 
+    // Checking to update reserve
+    if(array_key_exists($row['artwork_id'], $_POST)) { 
         $art_id = $row['artwork_id'];
-        update_original($art_id, $con);
+        update_reserve($art_id, $con);
+        header("Location: index_emp.php");
+    }
+    // Checking to update approval
+    if(array_key_exists($row['artwork_id'] . 'a', $_POST)) { 
+        $art_id = $row['artwork_id'];
+        update_approval($art_id, $con);
         header("Location: index_emp.php");
     }
 }
