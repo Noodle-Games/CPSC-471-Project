@@ -17,13 +17,13 @@ if (isset($_SESSION['customer_id'])){
     <h1> Calgary Art Market </h1>
     <h2> Welcome, <?php echo $_SESSION['Fname'] . " " . $_SESSION['Lname']; ?></h2>
 </div>
+
 <button class="button_header button_blue" onclick="location='print_collection.php'">Print Collection</button>
 <button class="button_header button_yellow" onclick="location='live_auctions.php'">Live Auctions</button>
 <button class="button_header button_red" onclick="location='submit_artwork.php'">Submit Artwork</button>
-<button class="button_header button_grey" onclick="location='order_history.php'">Order History</button>
-
+<button class="button_header button_green" onclick="location='order_history.php'">Order History</button>
 <br><br>
-<h3> Exhibitions </h3>
+<h3> Upcoming Exhibitions </h3>
 
 <!-- EXHIBITION LOGIC -->
 <?php

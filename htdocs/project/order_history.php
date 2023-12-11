@@ -16,8 +16,12 @@ session_start();
     <button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
 
     <h1> Calgary Art Market </h1>
-    <h2> Order History </h2>
 </div>
+<button class="button_header button_blue" onclick="location='print_collection.php'">Print Collection</button>
+<button class="button_header button_yellow" onclick="location='live_auctions.php'">Live Auctions</button>
+<button class="button_header button_red" onclick="location='submit_artwork.php'">Submit Artwork</button>
+<button class="button_header button_grey current-page" onclick="location='order_history.php'">Order History</button>
+<br><br> 
 
 <?php
 // Retrieve Session
@@ -57,5 +61,11 @@ echo "</table>";
 
 </body>
 </html>
+
+<style>
+    .button_grey.current-page  {
+        background-color: rgba(170, 170, 170, 0.7);       
+    }
+</style>
 
 

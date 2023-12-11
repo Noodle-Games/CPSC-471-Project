@@ -13,8 +13,12 @@ session_start();
     <button class="button button_home" onclick="location='index.php'">Logout</button>
     <button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
     <h1> Calgary Art Market </h1>
-    <h2> Artwork Submission </h2>
 </div>
+<button class="button_header button_blue" onclick="location='print_collection.php'">Print Collection</button>
+<button class="button_header button_yellow" onclick="location='live_auctions.php'">Live Auctions</button>
+<button class="button_header button_red current-page" onclick="location='submit_artwork.php'">Submit Artwork</button>
+<button class="button_header button_grey" onclick="location='order_history.php'">Order History</button>
+<br><br> 
 <h3>Submit Original Artwork for Auction</h3>
 
 <form method="post">
@@ -126,3 +130,8 @@ if (array_key_exists('title', $_POST)){
 </html>
 
 
+<style>
+    .button_red.current-page  {
+        background-color: rgba(170, 170, 170, 0.7);       
+    }
+</style>

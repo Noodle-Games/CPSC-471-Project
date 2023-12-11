@@ -22,13 +22,17 @@ if (!$con) {
 
 <body>
 
-    <button class="button button_home" onclick="location='index.php'">Logout</button>
-    <button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
-
     <div class="div1">
-        <h1>Calgary Art Market</h1>
-        <h2>Live Auctions</h2>
+        
+        <button class="button button_home" onclick="location='index.php'">Logout</button>
+        <button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
+        <h1> Calgary Art Market </h1>
     </div>
+    <button class="button_header button_blue" onclick="location='print_collection.php'">Print Collection</button>
+    <button class="button_header button_yellow current-page" onclick="location='live_auctions.php'">Live Auctions</button>
+    <button class="button_header button_red" onclick="location='submit_artwork.php'">Submit Artwork</button>
+    <button class="button_header button_grey" onclick="location='order_history.php'">Order History</button>
+    <br><br>    
 
     <?php
     // AUCTION DISPLAY
@@ -98,6 +102,11 @@ if (!$con) {
 
 
 <style>
+    .button_yellow.current-page  {
+        background-color: rgba(170, 170, 170, 0.7);
+        
+        
+}
     .auction-item {
         display: grid;
         grid-template-columns: 1fr 1fr;
