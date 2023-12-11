@@ -104,9 +104,16 @@ $query = "SELECT customer_id FROM customer";
 $customer_ids = mysqli_query($con, $query);
 while($row = mysqli_fetch_array($customer_ids)){
     if(array_key_exists($row['customer_id'], $_POST)) { 
-        $cust_id = $row['customer_id'];
-        update_customer($cust_id, $con);
-        header("Location: cust_info.php");
+
+        if(!empty($_POST[$row['customer_id']])){
+            $cust_id = $row['customer_id'];
+            update_customer($cust_id, $con);
+            header("Location: cust_info.php");
+        }
+        else{
+            echo "Please enter a valid email address";
+        }
+        
     }
 }
 
