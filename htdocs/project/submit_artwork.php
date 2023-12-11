@@ -83,7 +83,7 @@ function create_artwork($title, $year, $email, $reserve, $con){
 
         // If unique artwork_id is found, insert into artwork table then create an original
         if (!in_array($art_id, $art_ids)){
-            $query = "INSERT INTO artwork VALUES (\"$art_id\", \"$title\", \"$year\", \"$email\", NULL, \"S001\")";
+            $query = "INSERT INTO artwork VALUES (\"$art_id\", \"$title\", \"$year\", \"$email\", NULL, \"S001\", NULL)";
             mysqli_query($con, $query);
             create_original($art_id, $reserve, $con);
             $unique = True;
