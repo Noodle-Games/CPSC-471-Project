@@ -17,7 +17,7 @@ if (isset($_SESSION['employee_id'])){
     <h2> Welcome, <?php echo $_SESSION['Fname'] . " " . $_SESSION['Lname']; ?></h2>
 </div>
 
-<!-- START OF MODIFYING PRINT ARTWORK MEGA SECTION -->
+<!-- START OF MODIFYING PRINT ARTWORK MEGA SECTION ---------------------->
 <h3> Modify Print Artwork </h3>
 <?php
 // Create SQL connection
@@ -133,10 +133,10 @@ while($row = mysqli_fetch_array($artwork_ids)){
 
 display_artwork($artwork_id_search, $con); 
 ?>
-<!-- END OF MODIFYING PRINT ARTWORK MEGA SECTION -->
+<!-- END OF MODIFYING PRINT ARTWORK MEGA SECTION ---------------------->
 
 
-<!-- START OF MODIFYING ORIGINAL ARTWORK MEGA SECTION -->
+<!-- START OF MODIFYING ORIGINAL ARTWORK MEGA SECTION ----------------->
 <h3> Modify Original Artwork </h3>
 <?php
 
@@ -173,6 +173,7 @@ function display_original($art_id, $con){
     <th class=\"th_blue\"> Artist Contact </th>
     <th class=\"th_blue\"> Location </th>
     <th class=\"th_blue\"> Approval</th>
+    <th class=\"th_blue\"> </th>
     <th class=\"th_blue\"> </th>
     <th class=\"th_blue\"> </th>
     </tr>";
@@ -298,9 +299,126 @@ while($row = mysqli_fetch_array($original_ids)){
 
 display_original($original_id_search, $con); 
 
+?>
+<!-- END OF MODIFYING ORIGINAL ARTWORK MEGA SECTION ----------------->
+
+
+<!-- START OF AUCTION MEGA SECTION ----------------------------------->
+<h3> Live Auctions </h3>
+<?php
+
+// SEARCH FUNCTION
+$auction_id_search = $auctionErr = "";
+// Reference 1: https://www.w3schools.com/php/php_form_complete.asp
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(array_key_exists('auction_id_search', $_POST)){
+        $auction_id_search = test_input($_POST["auction_id_search"]);
+        // check if name only contains letters and whitespace
+        if (!preg_match("/^[a-zA-Z0-9' ]*$/",$auction_id_search)) {
+            $auctionErr = "Only letters, numbers, and white space allowed";
+        }
+    }
+}
+
+// SQL query to display current auctions
+function display_auction($art_id, $con){
+    $query = "";
+    if ($art_id == ""){
+        $query = "SELECT * FROM auction AS A, artwork AS O WHERE A.artwork_id = O.artwork_id";
+    }
+    else {
+        $art_id = "\"" . $art_id . "\"";
+        $query = "SELECT * FROM auction AS A, artwork AS O WHERE A.artwork_id = O.artwork_id AND (O.title = $art_id OR O.artwork_id = $art_id)";
+    }
+    $prints = mysqli_query($con, $query);
+    echo "<table border='1'>
+    <tr>
+    <th class=\"th_blue\"> ID </th>
+    <th class=\"th_blue\"> Title </th>
+    <th class=\"th_blue\"> Starting Bid </th>
+    <th class=\"th_blue\"> Highest Bid </th>
+    <th class=\"th_blue\"> Start Date </th>
+    <th class=\"th_blue\"> End Date </th>
+    <th class=\"th_blue\"> </th>
+    </tr>";
+    while($row = mysqli_fetch_array($prints)){
+        echo "<tr>";
+        echo "<td>" . $row['artwork_id']. "</td>";
+        echo "<td>" . $row['title']. "</td>";
+        echo "<td>" . $row['starting_bid']. "</td>";
+        echo "<td>" . $row['highest_bid']. "</td>";
+        echo "<td>" . $row['start_date']. "</td>";
+        echo "<td>" . $row['end_date']. "</td>";
+        echo "<td> <form method=\"post\"> <input style=\"width: 100%;\" type=\"submit\" name=\"". $row['artwork_id'] . "e" . "\" value=\"End Auction\"> </form> </td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+}
+
+// End an auction and send receipt
+function end_auction($art_id, $con) {
+
+    // Get highest bidder info
+    $bidderIDQuery = "SELECT bidder_id FROM bids WHERE artwork_id = ? AND amount = MAX(amount)";
+    $getAmount = $con->prepare($bidderIDQuery);
+    $getAmount->bind_param("s", $art_id);
+    $getAmount->execute();
+    $getAmount->bind_result($highest_bidder);
+    $getAmount->fetch();
+    $getAmount->close();
+
+    $amountQuery = "SELECT MAX(amount) FROM bids WHERE artwork_id = ?";
+    $getAmount = $con->prepare($amountQuery);
+    $getAmount->bind_param("s", $art_id);
+    $getAmount->execute();
+    $getAmount->bind_result($price);
+    $getAmount->fetch();
+    $getAmount->close();
+
+    // Creating a receipt for the winner
+    $query1 = "INSERT INTO receipt VALUES (?, ?, GETDATE(), ?)";
+    $newReceipt = $con->prepare($query1);
+    $newReceipt->bind_param("ssd", $art_id, $highest_bidder, $price);
+    $newReceipt->execute();
+    $newReceipt->close();
+
+    // Remove auction
+    $query2 = "DELETE FROM auction WHERE artwork_id = ?";
+    $removeAuction = $con->prepare($query2);
+    $removeAuction->bind_param("s", $art_id);
+    $removeAuction->execute();
+    $removeAuction->close();
+}
+
+?>
+
+<!--Reference 1-->
+<!-- Search Artwork -->
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+    Search Artwork ID or Title: <input type="text" name="auction_id_search" value="<?php echo $auction_id_search;?>">
+    <input type="submit" name="submit" value="Search">
+    <span> <?php echo $auctionErr;?></span>
+</form>
+<!--Reference 1-->
+
+<?php 
+
+// Checking for artwork changes input
+$query = "SELECT artwork_id FROM auction";
+$auction_ids = mysqli_query($con, $query);
+while($row = mysqli_fetch_array($auction_ids)){
+    if(array_key_exists($row['artwork_id'] . "e", $_POST)) { 
+        $art_id = $row['artwork_id'];
+        end_auction($art_id, $con);
+        header("Location: index_emp.php");
+    }
+}
+
+display_auction($auction_id_search, $con);
+
 mysqli_close($con);
 ?>
-<!-- END OF MODIFYING ORIGINAL ARTWORK MEGA SECTION -->
+<!-- END OF AUCTION MEGA SECTION ----------------------------------->
 
 </body>
 </html>
