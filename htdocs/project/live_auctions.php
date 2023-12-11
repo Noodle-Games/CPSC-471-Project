@@ -33,11 +33,15 @@ if (!$con) {
     <button class="button_header button_red" onclick="location='submit_artwork.php'">Submit Artwork</button>
     <button class="button_header button_grey" onclick="location='order_history.php'">Order History</button>
     <br><br>    
+    <br><br>  
 
     <?php
     // AUCTION DISPLAY
     $query = "SELECT * FROM auction";
     $auction = mysqli_query($con, $query);
+    if (mysqli_num_rows($auction) < 1) {
+        echo' <h2> No Auctions Currently Happening </h2>';
+        }
     
     while ($row = mysqli_fetch_array($auction)) {
         echo '<div class="auction-item">';
@@ -71,6 +75,12 @@ if (!$con) {
                 if ($updateStatement->execute()) {
                     echo "Bid placed successfully!";
                     header("Location: live_auctions.php");
+
+                    $insertBidQuery = "INSERT INTO bids (customer_id, artwork_id, bid_price) VALUES (?, ?, ?)";
+                    $insertBid = $con->prepare($insertBidQuery);
+                    $insertBid->bind_param("ssd", $_SESSION['customer_id'], $artwork_id, $bid_amount);
+
+                    $insertBid->execute();
                 } else {
                     echo "Error updating bid: " . $updateStatement->error;
                 }

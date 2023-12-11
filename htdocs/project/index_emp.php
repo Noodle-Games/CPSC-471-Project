@@ -359,15 +359,15 @@ function display_auction($art_id, $con){
 function end_auction($art_id, $con) {
 
     // Get highest bidder info
-    $bidderIDQuery = "SELECT bidder_id FROM bids WHERE artwork_id = ? AND amount = MAX(amount)";
+    $bidderIDQuery = "SELECT customer_id FROM bids WHERE artwork_id = ? AND bid_price = (SELECT MAX(bid_price) FROM bids WHERE artwork_id = ?)";
     $getAmount = $con->prepare($bidderIDQuery);
-    $getAmount->bind_param("s", $art_id);
+    $getAmount->bind_param("ss", $art_id,$art_id);
     $getAmount->execute();
     $getAmount->bind_result($highest_bidder);
     $getAmount->fetch();
     $getAmount->close();
 
-    $amountQuery = "SELECT MAX(amount) FROM bids WHERE artwork_id = ?";
+    $amountQuery = "SELECT MAX(bid_price) FROM bids WHERE artwork_id = ?";
     $getAmount = $con->prepare($amountQuery);
     $getAmount->bind_param("s", $art_id);
     $getAmount->execute();
@@ -376,18 +376,32 @@ function end_auction($art_id, $con) {
     $getAmount->close();
 
     // Creating a receipt for the winner
-    $query1 = "INSERT INTO receipt VALUES (?, ?, GETDATE(), ?)";
+    $query1 = "INSERT INTO receipt VALUES (?, ?, NOW(), ?)";
     $newReceipt = $con->prepare($query1);
     $newReceipt->bind_param("ssd", $art_id, $highest_bidder, $price);
     $newReceipt->execute();
     $newReceipt->close();
 
+    $query9 = "DELETE FROM bids WHERE artwork_id = ?";
+    $deleteBids = $con->prepare($query9);
+    $deleteBids->bind_param("s", $art_id);
+
+if ($deleteBids->execute()) {
+    $deleteBids->close();
     // Remove auction
     $query2 = "DELETE FROM auction WHERE artwork_id = ?";
     $removeAuction = $con->prepare($query2);
     $removeAuction->bind_param("s", $art_id);
     $removeAuction->execute();
     $removeAuction->close();
+    }
+
+    $query10 = "DELETE FROM original WHERE artwork_id = ?";
+    $deleteOG = $con->prepare($query10);
+    $deleteOG->bind_param("s", $art_id);
+    $deleteOG->execute();
+    $deleteOG->close();
+
 }
 
 ?>
@@ -409,8 +423,11 @@ $auction_ids = mysqli_query($con, $query);
 while($row = mysqli_fetch_array($auction_ids)){
     if(array_key_exists($row['artwork_id'] . "e", $_POST)) { 
         $art_id = $row['artwork_id'];
+        
         end_auction($art_id, $con);
         header("Location: index_emp.php");
+        exit();
+        
     }
 }
 
