@@ -2,6 +2,7 @@
 
 session_start();
 
+//Check login condition
 if (isset($_SESSION['customer_id'])){
 // Create SQL connection
 $con = mysqli_connect("localhost", "cpsc471_project", "1234", "art_gallery");
@@ -21,9 +22,8 @@ if (!$con) {
 </head>
 
 <body>
-
-    <div class="div1">
-        
+<!-- MENU Bar --->
+    <div class="div1"> 
         <button class="button button_home" onclick="location='index.php'">Logout</button>
         <button class="button button_home" onclick="location='index_cust.php'">Home Page</button>
         <h1> Calgary Art Market </h1>
@@ -34,18 +34,30 @@ if (!$con) {
     <button class="button_header button_grey" onclick="location='order_history.php'">Order History</button>
     <br><br>    
     <br><br>  
-
+<!-- MENU Bar end --->
     <?php
     // AUCTION DISPLAY
     $query = "SELECT * FROM auction";
     $auction = mysqli_query($con, $query);
+    //Display header if no auction tuples in table 
     if (mysqli_num_rows($auction) < 1) {
         echo' <h2> No Auctions Currently Happening </h2>';
-        }
-    
+        
+    }
+    //Display acutions if table populated
     while ($row = mysqli_fetch_array($auction)) {
         echo '<div class="auction-item">';
-        echo '<img src="">';
+        $artwork_id = $row['artwork_id'];
+        $query13 = "SELECT image FROM artwork WHERE artwork_id = ?";
+        $imageRow = $con->prepare($query13);
+        $imageRow->bind_param("s", $artwork_id);
+        $imageRow->execute();
+        $imageResult = $imageRow->get_result();
+
+        if ($imageResult && $imageRow = $imageResult->fetch_assoc()) {
+            $filename = $imageRow['image'];
+            echo '<img src="../img/' . $filename . '" alt="Image Currently Being Updated..." width="250" height="250">';
+        }
         echo '<div class="details">';
         echo '<p><strong>Starting Bid:</strong> $' . $row['starting_bid'] . '</p>';
         echo '<p><strong>Highest Bid:</strong> $' . $row['highest_bid'] . '</p>';
@@ -58,6 +70,7 @@ if (!$con) {
         echo '<input type="submit" name="submit_' . $row['artwork_id'] . '" value="Submit Bid">';
         echo '</form>';
     
+        //Update highest bid for auction piece
         if (isset($_POST["submit_" . $row['artwork_id']]) && $_POST['action'] == 'submit_bid') {
             $artwork_id = $_POST["artwork_id"];
             $bid_amount = $_POST["bid_amount"];
@@ -67,11 +80,11 @@ if (!$con) {
                 echo "Invalid bid amount";
             } else {
                 $bid_amount = floatval($bid_amount);
-    
                 $updateQuery = "UPDATE auction SET highest_bid = ? WHERE artwork_id = ?";
                 $updateStatement = $con->prepare($updateQuery);
                 $updateStatement->bind_param("ds", $bid_amount, $artwork_id);
     
+                //Update the bids table (contains all bids for a piece)
                 if ($updateStatement->execute()) {
                     echo "Bid placed successfully!";
                     header("Location: live_auctions.php");
@@ -84,7 +97,6 @@ if (!$con) {
                 } else {
                     echo "Error updating bid: " . $updateStatement->error;
                 }
-    
                 $updateStatement->close();
             }
         }
@@ -109,8 +121,6 @@ if (!$con) {
     exit();
 }
 ?>
-
-
 <style>
     .button_yellow.current-page  {
         background-color: rgba(170, 170, 170, 0.7);
