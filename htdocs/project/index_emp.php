@@ -85,18 +85,19 @@ function display_artwork($art_id, $con){
 }
 
 function update_quantity($art_id, $con){
-
-    // Update quantity
     $newQuantity = test_input($_POST[$art_id]);
+    if(empty($newQuantity)) return;
+
     $artid = "\"" . $art_id . "\"";
     $query = "UPDATE print AS P SET P.quantity = $newQuantity WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
 }
 
 function update_price($art_id, $con){
-
-    // Update price
     $newPrice = test_input($_POST[$art_id."p"]);
+    if(empty($newPrice)) return;
+
+
     $artid = "\"" . $art_id . "\"";
     $query = "UPDATE print AS P SET P.price = $newPrice WHERE P.artwork_id = $artid";
     mysqli_query($con, $query);
@@ -195,8 +196,9 @@ function display_original($art_id, $con){
 
 // Query to update the reserve price for an original
 function update_reserve($art_id, $con) {
-    // Update reserve
     $newReserve = test_input($_POST[$art_id]);
+    if(empty($newReserve)) return;
+
     //$artid = "\"" . $art_id . "\"";
     $query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
     $query2 = "UPDATE auction SET starting_bid = ? WHERE artwork_id = ?";

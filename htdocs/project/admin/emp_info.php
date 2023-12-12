@@ -84,6 +84,8 @@ function update_employee($emp_id, $con){
 
     // Update hourly_wage
     $newQuantity = test_input($_POST[$emp_id]);
+    if(empty($newQuantity)) return;
+
     $empid = "\"" . $emp_id . "\"";
     $query = "UPDATE employee SET hourly_rate = $newQuantity WHERE employee_id = $empid";
     mysqli_query($con, $query);
