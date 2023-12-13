@@ -16,7 +16,6 @@ if (isset($_SESSION['employee_id'])){
 <div class="div1">
     
     <button class="button button_home" onclick="location='index.php'">Logout</button>
-    <!-- <button class="button button_home" onclick="location='index_emp.php'">Home Page</button> -->
     
     <h1> Calgary Art Market </h1>
     <h2> Welcome, Manager <?php echo $_SESSION['Fname'] . " " . $_SESSION['Lname']; ?></h2>

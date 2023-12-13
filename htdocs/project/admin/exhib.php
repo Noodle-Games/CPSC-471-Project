@@ -113,6 +113,7 @@ display_artwork($artwork_id_search, $con);
 </form>
 
 <?php
+// Add exhibition piece
 function add_exhib($date, $store_id, $art_id, $art_title, $con){
     $query = "SELECT artwork_id FROM exhibition";
     $result = mysqli_query($con, $query);

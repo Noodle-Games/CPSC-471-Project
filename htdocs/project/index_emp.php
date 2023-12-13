@@ -199,7 +199,6 @@ function update_reserve($art_id, $con) {
     $newReserve = test_input($_POST[$art_id]);
     if(empty($newReserve)) return;
 
-    //$artid = "\"" . $art_id . "\"";
     $query1 = "UPDATE original SET reserve = ? WHERE artwork_id = ?";
     $query2 = "UPDATE auction SET starting_bid = ? WHERE artwork_id = ?";
     
@@ -427,7 +426,6 @@ while($row = mysqli_fetch_array($auction_ids)){
         $art_id = $row['artwork_id'];
         
         end_auction($art_id, $con);
-        //header("Location: index_emp.php");
         exit();
         
     }

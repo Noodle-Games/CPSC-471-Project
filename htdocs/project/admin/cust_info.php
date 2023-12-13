@@ -143,6 +143,8 @@ display_cust($cust_id_search, $con);
 </form>
 
 <?php
+
+// Adding in a new customer
 function add_cust($cust_id, $email, $Fname, $Lname, $con){
     $query = "SELECT email FROM customer";
     $result = mysqli_query($con, $query);
