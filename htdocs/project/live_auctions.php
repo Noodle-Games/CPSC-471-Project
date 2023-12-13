@@ -46,6 +46,7 @@ if (!$con) {
     }
     //Display acutions if table populated
     while ($row = mysqli_fetch_array($auction)) {
+        //Reference: https://www.php.net/manual/en/mysqli-stmt.bind-param.php
         echo '<div class="auction-item">';
         $artwork_id = $row['artwork_id'];
         $query13 = "SELECT image FROM artwork WHERE artwork_id = ?";
