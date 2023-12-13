@@ -56,7 +56,7 @@ if (!$con) {
 
         if ($imageResult && $imageRow = $imageResult->fetch_assoc()) {
             $filename = $imageRow['image'];
-            echo '<img src="img/' . $filename . '" alt="Image Currently Being Updated..." width="250" height="250">';
+            echo '<img src="imgdb/' . $filename . '" alt="Image Currently Being Updated..." width="250" height="250">';
         }
         echo '<div class="details">';
         echo '<p><strong>Starting Bid:</strong> $' . $row['starting_bid'] . '</p>';
